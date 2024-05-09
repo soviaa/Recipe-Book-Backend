@@ -13,3 +13,5 @@ Route::get('/index', 'App\Http\Controllers\Admin\Authentication\AuthenticationCo
 
 Route::post('/user/login', 'App\Http\Controllers\User\Authentication\AuthenticationController@login');
 Route::get('/user/index', 'App\Http\Controllers\User\Authentication\AuthenticationController@index')->middleware('auth:sanctum');
+
+Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
