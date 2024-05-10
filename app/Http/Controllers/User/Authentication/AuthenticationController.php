@@ -21,7 +21,9 @@ class AuthenticationController extends Controller
             $token = $user->createToken('token-name')->plainTextToken;
             return response()->json([
                 'access_token' => $token,
-                'message' => 'Login successful'], 200);
+                'message' => 'Login successful',
+                'data' => $user
+                ], 200);
 
         }
         catch(\Exception $e)
