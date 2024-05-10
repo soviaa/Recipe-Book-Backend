@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User\Authentication;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
@@ -28,7 +28,9 @@ class AuthenticationController extends Controller
         }
         catch(\Exception $e)
         {
-            echo $e->getMessage();
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage()], 500);
         }
     }
     public function index()
