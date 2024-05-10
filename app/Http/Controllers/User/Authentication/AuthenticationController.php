@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User\Authentication;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
@@ -51,12 +51,16 @@ class AuthenticationController extends Controller
             $token = $user->createToken('token-name')->plainTextToken;
             return response()->json([
                 'access_token' => $token,
-                'message' => 'Login successful'], 200);
+                'message' => 'Login successful',
+                'data' => $user
+                ], 200);
 
         }
         catch(\Exception $e)
         {
-            echo $e->getMessage();
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage()], 500);
         }
     }
     public function index()
