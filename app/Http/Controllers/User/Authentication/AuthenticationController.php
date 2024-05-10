@@ -9,6 +9,36 @@ use Hash;
 
 class AuthenticationController extends Controller
 {
+    public function register(Request $request)
+    {
+
+        try{
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+                'confirmPassword' => 'required|same:password'
+            ]);
+
+            $user = new User();
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+  
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User registered successfully',
+                'data' => $user
+            ], 200);
+        }
+        catch(\Exception $e)
+        {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'User registration failed' .$e,
+                'data' => null,
+            ], 401);
+        }
+    }
     public function login(Request $request)
     {
         try{
