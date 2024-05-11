@@ -18,3 +18,4 @@ Route::get('/user/index', 'App\Http\Controllers\User\Authentication\Authenticati
 Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
 
 Route::get('/category', 'App\Http\Controllers\CategoryController@index');
+Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle');
