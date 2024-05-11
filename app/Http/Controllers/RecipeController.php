@@ -16,4 +16,23 @@ class RecipeController extends Controller
             'data' => $recipes
         ], 200);
     }
+
+    public function recipeSingle($id)
+    {
+        $recipe = Recipe::find($id);
+        if($recipe){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Recipe retrieved successfully',
+                'data' => $recipe
+            ], 200);
+        }
+        else{
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Recipe not found',
+                'data' => null
+            ], 404);
+        }
+    }
 }
