@@ -19,7 +19,7 @@ class RecipeController extends Controller
 
     public function recipeSingle($id)
     {
-        $recipe = Recipe::find($id);
+        $recipe = Recipe::with('user')->where('id', $id)->first();
         if($recipe){
             return response()->json([
                 'status' => 'success',
