@@ -11,6 +11,7 @@ Route::post('/login', 'App\Http\Controllers\Admin\Authentication\AuthenticationC
 Route::post('/user/login', 'App\Http\Controllers\Admin\Authentication\AuthenticationController@login');
 Route::post('/user/register', 'App\Http\Controllers\User\Authentication\AuthenticationController@register');
 Route::post('/user/reset-password', 'App\Http\Controllers\User\Authentication\AuthenticationController@resetPassword')->middleware('auth:sanctum');
+Route::patch('/user/update', 'App\Http\Controllers\User\Authentication\AuthenticationController@update')->middleware('auth:sanctum');
 
 
 Route::post('/user/login', 'App\Http\Controllers\User\Authentication\AuthenticationController@login');

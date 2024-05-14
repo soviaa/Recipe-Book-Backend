@@ -117,6 +117,41 @@ class AuthenticationController extends Controller
                 'error' => $e->getMessage()], 500);
         }
     }
+
+    public function update(Request $request){
+        try{
+            $request->validate([
+                'firstName' => 'sometimes|required',
+                'lastName' => 'sometimes|required',
+            ]);
+
+            $user = $request->user();
+            $user->firstName = $request->firstName;
+            $user->lastName = $request->lastName;
+            $user->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User updated successfully',
+                'data' => $user
+            ], 200);
+        }
+        catch(\Illuminate\Validation\ValidationException $e)
+        {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'User update failed',
+                'errors' => $e->errors(),
+            ], 422);
+        }
+        catch(\Exception $e)
+        {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'User update failed' .$e,
+            ], 400);
+        }
+    }
     // public function index()
     // {
     //     return response()->json([
