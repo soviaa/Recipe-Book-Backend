@@ -11,7 +11,8 @@ Route::post('/login', 'App\Http\Controllers\Admin\Authentication\AuthenticationC
 Route::post('/user/login', 'App\Http\Controllers\Admin\Authentication\AuthenticationController@login');
 Route::post('/user/register', 'App\Http\Controllers\User\Authentication\AuthenticationController@register');
 Route::post('/user/reset-password', 'App\Http\Controllers\User\Authentication\AuthenticationController@resetPassword')->middleware('auth:sanctum');
-Route::patch('/user/update', 'App\Http\Controllers\User\Authentication\AuthenticationController@update')->middleware('auth:sanctum');
+Route::post('/user/update', 'App\Http\Controllers\User\Authentication\AuthenticationController@update')->middleware('auth:sanctum');
+Route::get('/user/profile', 'App\Http\Controllers\User\Authentication\AuthenticationController@index')->middleware('auth:sanctum');
 
 
 Route::post('/user/login', 'App\Http\Controllers\User\Authentication\AuthenticationController@login');
@@ -22,4 +23,3 @@ Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
 Route::get('/category', 'App\Http\Controllers\CategoryController@index');
 Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle');
 
-Route::get('/user/profile', 'App\Http\Controllers\User\Authentication\AuthenticationController@index')->middleware('auth:sanctum');
