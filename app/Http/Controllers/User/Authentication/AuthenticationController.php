@@ -7,10 +7,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 class AuthenticationController extends Controller
 {
-    public function index(){
-        $user= Auth::user();
+    public function index()
+    {
+        $user = Auth::user();
+
+
+        // Check if the user has an image
+        if ($user->image) {
+            // Generate the image URL
+            $imageUrl = Storage::url($user->image);
+            $user->image = asset($imageUrl);
+        }
+
         return response()->json([
             'message' => 'Welcome to the user panel',
             'data' => $user
@@ -123,17 +135,29 @@ class AuthenticationController extends Controller
             $request->validate([
                 'firstName' => 'sometimes|required',
                 'lastName' => 'sometimes|required',
+                'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg',
             ]);
 
             $user = $request->user();
             $user->firstName = $request->firstName;
             $user->lastName = $request->lastName;
-            $user->save();
 
+            if($request->hasFile('image')) {
+                $file = $request->file('image');
+                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $timestamp = time();
+                $fileExtension = $file->getClientOriginalExtension();
+                $newFileName = $filename . '_' . $timestamp . '.' . $fileExtension;
+                $path = $file->storeAs('public/profileImages', $newFileName);
+                $user->image = $path;
+            }
+
+
+            $user->save();
             return response()->json([
                 'status' => 'success',
                 'message' => 'User updated successfully',
-                'data' => $user
+                'data' => $request->image
             ], 200);
         }
         catch(\Illuminate\Validation\ValidationException $e)
@@ -142,6 +166,7 @@ class AuthenticationController extends Controller
                 'status' => 'failure',
                 'message' => 'User update failed',
                 'errors' => $e->errors(),
+
             ], 422);
         }
         catch(\Exception $e)
