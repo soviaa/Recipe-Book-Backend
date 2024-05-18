@@ -25,3 +25,5 @@ Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle')
 
 Route::get('/comment', 'App\Http\Controllers\User\CommentsController@index');
 Route::get('/comment/{id}', 'App\Http\Controllers\User\CommentsController@commentSingle');
+Route::post('/comment/{id}/reply', 'App\Http\Controllers\User\CommentsController@replyStore');
+Route::post('/comment', 'App\Http\Controllers\User\CommentsController@store');
