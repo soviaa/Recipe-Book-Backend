@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CommentReply extends Model
 {
-    use HasFactory;
 
     protected $fillable = ['reply', 'user_id', 'comment_id'];
 
