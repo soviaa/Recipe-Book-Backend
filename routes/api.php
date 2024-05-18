@@ -23,3 +23,5 @@ Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
 Route::get('/category', 'App\Http\Controllers\CategoryController@index');
 Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle');
 
+Route::get('/comment', 'App\Http\Controllers\User\CommentsController@index');
+Route::get('/comment/{id}', 'App\Http\Controllers\User\CommentsController@commentSingle');
