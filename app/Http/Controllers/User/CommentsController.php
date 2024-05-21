@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\CommentReply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CommentsController extends Controller
 {
@@ -22,6 +23,7 @@ class CommentsController extends Controller
     public function commentSingle($id)
     {
         $comment = Comment::with('user', 'replies.user')->where('recipe_id', $id)->get()->toArray();
+     
         if($comment){
             return response()->json([
                 'status' => 'success',
