@@ -13,6 +13,8 @@ Route::post('/user/register', 'App\Http\Controllers\User\Authentication\Authenti
 Route::post('/user/reset-password', 'App\Http\Controllers\User\Authentication\AuthenticationController@resetPassword')->middleware('auth:sanctum');
 Route::post('/user/update', 'App\Http\Controllers\User\Authentication\AuthenticationController@update')->middleware('auth:sanctum');
 Route::get('/user/profile', 'App\Http\Controllers\User\Authentication\AuthenticationController@index')->middleware('auth:sanctum');
+Route::get('/user/setting', 'App\Http\Controllers\User\Authentication\AuthenticationController@getUserSetting')->middleware('auth:sanctum');
+Route::post('/user/setting', 'App\Http\Controllers\User\Authentication\AuthenticationController@updateSetting')->middleware('auth:sanctum');
 
 
 Route::post('/user/login', 'App\Http\Controllers\User\Authentication\AuthenticationController@login');
@@ -27,3 +29,6 @@ Route::get('/comment', 'App\Http\Controllers\User\CommentsController@index');
 Route::get('/comment/{id}', 'App\Http\Controllers\User\CommentsController@commentSingle');
 Route::post('/comment/{id}/reply', 'App\Http\Controllers\User\CommentsController@replyStore');
 Route::post('/comment', 'App\Http\Controllers\User\CommentsController@store');
+
+Route::get('/setting', 'App\Http\Controllers\SettingController@getSetting');
+Route::patch('/setting/{id}', 'App\Http\Controllers\SettingController@updateSetting');

@@ -13,8 +13,13 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('setting_name');
-            $table->string('setting_value')->nullable();
+            $table->boolean('2fa')->default('0');
+            $table->boolean('private_account')->default('0');
+            $table->boolean('recipe_recommendation')->default('0');
+            $table->boolean('friends_activities')->default('0');
+            $table->boolean('promotional_updates')->default('0');
+            $table->boolean('system_notification')->default('0');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

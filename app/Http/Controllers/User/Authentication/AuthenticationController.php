@@ -8,14 +8,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Setting;
 
 class AuthenticationController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-
-
         // Check if the user has an image
         if ($user->image) {
             // Generate the image URL
@@ -182,5 +181,68 @@ class AuthenticationController extends Controller
     //     return response()->json([
     //         'message' => 'Welcome to the user panel'], 200);
     // }
+    public function getUserSetting(){
+        try {
+            // Get the currently authenticated user
+            $user = auth()->user();
+
+            if ($user === null) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'User is not authenticated',
+                ], 401); // 401 Unauthorized
+            }
+
+             $settings = Setting::where('user_id', $user->id)->get();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User settings retrieved successfully',
+                'data' => $settings
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Failed to retrieve user settings: ' . $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    public function updateSetting(Request $request)
+    {
+        try {
+            // Get the currently authenticated user
+            $user = auth()->user();
+
+            if ($user === null) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'User is not authenticated',
+                ], 401); // 401 Unauthorized
+            }
+
+            $setting = Setting::where('user_id', $user->id)->first();
+
+            if ($setting === null) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'User setting not found',
+                ], 404); // 404 Not Found
+            }
+
+            $setting->update($request->all());
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User setting updated successfully',
+                'data' => $setting
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Failed to update user setting: ' . $e->getMessage(),
+            ], 400);
+        }
+    }
 
 }
