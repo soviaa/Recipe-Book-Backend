@@ -19,6 +19,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('image')->nullable();
+            $table->boolean('is_tfa')->default(false);
+            $table->string('tfa_secret')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
