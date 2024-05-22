@@ -11,7 +11,6 @@ class SettingsController extends Controller
     {
         $setting = Setting::whereIn('id', [1, 2, 3])->get();
 
-        dd($setting);
         $user = auth()->user();
         $setting = $request->notificationRecommendation;
 
