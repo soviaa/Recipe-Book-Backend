@@ -208,4 +208,41 @@ class AuthenticationController extends Controller
         }
     }
 
+    public function updateSetting(Request $request)
+    {
+        try {
+            // Get the currently authenticated user
+            $user = auth()->user();
+
+            if ($user === null) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'User is not authenticated',
+                ], 401); // 401 Unauthorized
+            }
+
+            $setting = Setting::where('user_id', $user->id)->first();
+
+            if ($setting === null) {
+                return response()->json([
+                    'status' => 'failure',
+                    'message' => 'User setting not found',
+                ], 404); // 404 Not Found
+            }
+
+            $setting->update($request->all());
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User setting updated successfully',
+                'data' => $setting
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Failed to update user setting: ' . $e->getMessage(),
+            ], 400);
+        }
+    }
+
 }
