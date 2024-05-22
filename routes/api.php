@@ -30,5 +30,5 @@ Route::get('/comment/{id}', 'App\Http\Controllers\User\CommentsController@commen
 Route::post('/comment/{id}/reply', 'App\Http\Controllers\User\CommentsController@replyStore');
 Route::post('/comment', 'App\Http\Controllers\User\CommentsController@store');
 
-Route::get('/setting', 'App\Http\Controllers\SettingController@getSetting');
-Route::patch('/setting/{id}', 'App\Http\Controllers\SettingController@updateSetting');
+Route::get('/user/setting', 'App\Http\Controllers\SettingController@getSetting');
+Route::patch('/user/setting/{id}', 'App\Http\Controllers\SettingController@updateSetting');
