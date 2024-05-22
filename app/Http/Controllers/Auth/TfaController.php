@@ -98,15 +98,14 @@ class TfaController extends Controller
         // Validate the request data
         $request->validate([
             'otp' => 'required|regex:/^[0-9]{6}$/', // OTP must be a 6-digit number
-            'user' => 'required|integer',
         ]);
 
         // Create a new instance of the Google2FA class
         $google2fa = new Google2FA();
 
         // Retrieve the user record that matches the provided user ID and decrypt the user's tfa_secret
-        $secretKey = User::where('id', $request->user)->first()->tfa_secret;
-        $user = User::where('id', $request->user)->first();
+        $secretKey = User::where('id', auth()->user()->id)->first()->tfa_secret;
+        $user = User::where('id', auth()->user()->id)->first();
 
         // Ensure that the secret key is a string
         $secretKey = (string) decrypt($secretKey);
