@@ -17,6 +17,7 @@ class Setting extends Model
         'friends_activities',
         'promotional_updates',
         'system_notification',
+        'cook_type',
     ];
 
 

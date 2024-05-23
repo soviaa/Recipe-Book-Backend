@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('friends_activities')->default('0');
             $table->boolean('promotional_updates')->default('0');
             $table->boolean('system_notification')->default('0');
+            $table->enum('cook_type', ['rookie', 'midbie', 'master'])->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
