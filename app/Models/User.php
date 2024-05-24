@@ -55,4 +55,14 @@ class User extends Authenticatable
             Setting::create(['user_id' => $user->id]);
         });
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followee_id', 'follower_id');
+    }
+
+    public function followees()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followee_id');
+    }
 }
