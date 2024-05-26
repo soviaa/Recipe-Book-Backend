@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 
 class FollowController extends Controller
@@ -71,8 +72,22 @@ class FollowController extends Controller
     {
         $user = User::findOrFail($userId);
         $followers = $user->followers()->get();
+        // dd($followers);
 
-        return response()->json($followers);
+        foreach($followers as $follower){
+            if ($follower->image) {
+                // Generate the image URL
+                $imageUrl = Storage::url($follower->image);
+                $follower->image = asset($imageUrl);
+            }
+        }
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'message' => 'Followers fetched successfully.',
+                'data' => $followers,
+            ]);
     }
 
     // Get list of followees
@@ -81,7 +96,20 @@ class FollowController extends Controller
         $user = User::findOrFail($userId);
         $followees = $user->followees()->get();
 
-        return response()->json($followees);
+      foreach($followees as $followee){
+            if ($followee->image) {
+                // Generate the image URL
+                $imageUrl = Storage::url($followee->image);
+                $followee->image = asset($imageUrl);
+            }
+        }
+
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Followees fetched successfully.',
+            'data' => $followees
+            ]);
     }
 
     // Check if the authenticated user is following the given user
