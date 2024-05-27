@@ -23,7 +23,20 @@ class CommentsController extends Controller
     public function commentSingle($id)
     {
         $comment = Comment::with('user', 'replies.user')->where('recipe_id', $id)->get()->toArray();
-     
+        foreach($comment as &$comments){
+            if ($comments['user']['image']) {
+                // Generate the image URL
+                $imageUrl = Storage::url($comments['user']['image']);
+                $comments['user']['image'] = asset($imageUrl);
+            }
+            foreach($comments['replies'] as &$reply){
+                if ($reply['user']['image']) {
+                    // Generate the image URL
+                    $imageUrl = Storage::url($reply['user']['image']);
+                    $reply['user']['image'] = asset($imageUrl);
+                }
+            }
+        }
         if($comment){
             return response()->json([
                 'status' => 'success',
@@ -55,6 +68,14 @@ class CommentsController extends Controller
 
         $comment = Comment::with('user')->where('id', $comment->id)->get()->toArray();
 
+        foreach($comment as &$comments){
+            if ($comments['user']['image']) {
+                // Generate the image URL
+                $imageUrl = Storage::url($comments['user']['image']);
+                $comments['user']['image'] = asset($imageUrl);
+            }
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Comment added successfully',
@@ -75,7 +96,13 @@ class CommentsController extends Controller
         $reply->save();
 
         $reply = CommentReply::with('user')->where('id', $reply->id)->get()->toArray();
-
+        foreach($reply as &$replies){
+            if ($replies['user']['image']) {
+                // Generate the image URL
+                $imageUrl = Storage::url($replies['user']['image']);
+                $replies['user']['image'] = asset($imageUrl);
+            }
+        }
         return response()->json([
             'status' => 'success',
             'message' => 'Reply added successfully',
