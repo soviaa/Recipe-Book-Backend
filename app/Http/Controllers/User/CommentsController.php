@@ -22,7 +22,11 @@ class CommentsController extends Controller
 
     public function commentSingle($id)
     {
-        $comment = Comment::with('user', 'replies.user')->where('recipe_id', $id)->get()->toArray();
+        $comment = Comment::with('user', 'replies.user')
+            ->where('recipe_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->toArray();
         foreach($comment as &$comments){
             if ($comments['user']['image']) {
                 // Generate the image URL
