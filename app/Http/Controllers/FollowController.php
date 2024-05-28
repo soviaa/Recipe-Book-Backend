@@ -26,7 +26,7 @@ class FollowController extends Controller
                 // Create a notification for the followed user (optional)
                 // $userToFollow->notify(new \App\Notifications\FollowNotification($user));
             }
-            $message = 'You have a new follower';
+            $message = $user->firstName . ' has followed You! Click here to view profile.';
             event(new UserFollowed($message));
 
             return response()->json([
