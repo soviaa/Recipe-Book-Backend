@@ -23,6 +23,7 @@ Route::post('/user/login', 'App\Http\Controllers\User\Authentication\Authenticat
 Route::get('/user/index', 'App\Http\Controllers\User\Authentication\AuthenticationController@index')->middleware('auth:sanctum');
 
 Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
+Route::post('/recipe', 'App\Http\Controllers\RecipeController@addRecipe')->middleware('auth:sanctum');
 
 Route::get('/category', 'App\Http\Controllers\CategoryController@index');
 Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle');
