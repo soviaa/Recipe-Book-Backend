@@ -38,6 +38,8 @@ Route::post('/user/tfa/disable', 'App\Http\Controllers\Auth\TfaController@twoFac
 
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/notifications/{user}', [FollowController::class, 'SendNotification']);
     Route::post('/follow/{userId}', [FollowController::class, 'follow'])->name('follow');
     Route::post('/unfollow/{userId}', [FollowController::class, 'unfollow'])->name('unfollow');
     Route::get('/followers/{userId}', [FollowController::class, 'followers'])->name('followers');

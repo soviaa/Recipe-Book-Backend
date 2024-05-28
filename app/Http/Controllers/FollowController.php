@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserFollowed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -25,6 +26,8 @@ class FollowController extends Controller
                 // Create a notification for the followed user (optional)
                 // $userToFollow->notify(new \App\Notifications\FollowNotification($user));
             }
+            $message = 'You have a new follower';
+            event(new UserFollowed($message));
 
             return response()->json([
                 'status' => 'success',
@@ -121,6 +124,21 @@ class FollowController extends Controller
         return response()->json([
             'status' => 'success',
             'isFollowing' => $isFollowing,
+        ]);
+    }
+
+
+
+    public function SendNotification($user)
+    {
+
+        $message = 'You have a new follower';
+        event(new UserFollowed($message));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Notification sent successfully',
+            'data' => null
         ]);
     }
 }
