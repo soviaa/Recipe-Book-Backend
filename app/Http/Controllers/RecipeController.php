@@ -11,9 +11,6 @@ class RecipeController extends Controller
 {
     public function index()
     {
-
-
-
         $recipes = Recipe::get()->toArray();
 
         return response()->json([
@@ -46,6 +43,41 @@ class RecipeController extends Controller
                 'message' => 'Recipe not found',
                 'data' => null
             ], 404);
+        }
+    }
+
+    public function addRecipe(Request $request)
+    {
+       try{
+
+           $validatedData = $request->validate([
+               'name' => 'required',
+               'description' => 'required',
+               'prep_time' => 'required',
+               'cook_time' => 'required',
+               'servings' => 'required',
+               'difficulty' => 'required',
+               'recipe_type' => 'required',
+               'image' => 'required',
+               'category_id' => 'required',
+            ]);
+
+            $validatedData['user_id'] = auth()->user()->id;
+
+            $recipe = Recipe::create($validatedData);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Recipe added successfully',
+                'data' => $recipe
+            ], 200);
+
+        }catch(\Exception $e){
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Recipe not added . ' . $e->getMessage(),
+                'data' => null
+            ], 400);
         }
     }
 }
