@@ -123,6 +123,7 @@ class FollowController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'message' => 'Follow status checked successfully.',
             'isFollowing' => $isFollowing,
         ]);
     }
