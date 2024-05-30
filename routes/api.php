@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\RecipeController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -24,6 +25,11 @@ Route::get('/user/index', 'App\Http\Controllers\User\Authentication\Authenticati
 
 Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
 Route::post('/recipe', 'App\Http\Controllers\RecipeController@addRecipe')->middleware('auth:sanctum');
+Route::post('/recipe/{recipe}/ingredient', [RecipeController::class, 'addIngredient'])->middleware('auth:sanctum');
+Route::get('/recipe/{recipe}/ingredient', [RecipeController::class, 'getIngredient'])->middleware('auth:sanctum');
+
+Route::get('/ingredient', 'App\Http\Controllers\IngredientController@index');
+
 
 Route::get('/category', 'App\Http\Controllers\CategoryController@index');
 Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle');
@@ -47,4 +53,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/followees/{userId}', [FollowController::class, 'followees'])->name('followees');
     Route::get('/follow/{userId}/status', [FollowController::class, 'checkFollowStatus'])->name('follows');
 });
+
 
