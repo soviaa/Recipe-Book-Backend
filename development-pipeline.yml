@@ -39,9 +39,8 @@ jobs:
                   # Migrate and seed the database
                   php artisan migrate:fresh 
                   php artisan db:seed
-                  php artisan scout:import "App\Models\User"
-                  php artisan scout:import "App\Models\Asset"
                   php artisan storage:link
+                  
                   php artisan serve --port=80 &
                 '
               displayName: "Continuous Integration and Deployment"
