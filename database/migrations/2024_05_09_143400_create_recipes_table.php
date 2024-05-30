@@ -18,11 +18,12 @@ return new class extends Migration
             $table->integer('prep_time');
             $table->integer('cook_time');
             $table->integer('servings');
-            $table->string('difficulty');
-            $table->string('recipe_type');
-            $table->string('image');
+            $table->json('ingredients')->nullable();
+            $table->string('difficulty')->nullable();
+            $table->string('recipe_type')->nullable();
+            $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('category_id')->constrained();
+            $table->foreignId('category_id')->nullable()->constrained();
             $table->boolean('is_private')->default(false);
             $table->boolean('is_approved')->default(true);
             $table->timestamps();
