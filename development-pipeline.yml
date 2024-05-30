@@ -41,6 +41,6 @@ jobs:
                   php artisan db:seed
                   php artisan storage:link
                   
-                  php artisan serve --port=80 &
+                  php artisan serve --port=80 --host 0.0.0.0 &
                 '
               displayName: "Continuous Integration and Deployment"
