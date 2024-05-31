@@ -1,0 +1,45 @@
+trigger:
+  - sc-deployment
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  phpVersion: "8.3"
+
+jobs:
+  - deployment: VMDeploy
+    displayName: Web deploy
+    environment:
+      name: "sc-recipe"
+      resourceType: VirtualMachine
+      resourceName: "sc-recipe-site"
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - script: |
+                sudo bash -c '
+                cd /home/securesclogin/Recipe-Book-Backend
+
+                # Pull the latest code
+                sudo git pull 
+
+                # Update the package list
+                apt update
+
+                # Install and update PHP dependencies
+                composer install
+                composer update
+                composer upgrade
+
+                # Generate a new application key
+                php artisan key:generate
+
+                  # Migrate and seed the database
+                  php artisan migrate:fresh 
+                  php artisan db:seed
+                  php artisan storage:link
+                  nohup php artisan serve --port=80 --host 0.0.0.0 &
+                '
+              displayName: "Continuous Integration and Deployment"
