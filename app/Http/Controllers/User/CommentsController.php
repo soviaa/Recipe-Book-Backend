@@ -66,7 +66,7 @@ class CommentsController extends Controller
 
         $comment = new Comment();
         $comment->comment = $request->comment;
-        $comment->user_id = 2;
+        $comment->user_id = auth()->user()->id;
         $comment->recipe_id = $request->recipe_id;
         $comment->save();
 
@@ -92,10 +92,9 @@ class CommentsController extends Controller
         $request->validate([
             'reply' => 'required',
         ]);
-
         $reply = new CommentReply();
         $reply->reply = $request->reply;
-        $reply->user_id = 1;
+        $reply->user_id = auth()->user()->id;
         $reply->comment_id = $id;
         $reply->save();
 
