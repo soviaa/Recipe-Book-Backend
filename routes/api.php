@@ -25,8 +25,7 @@ Route::get('/user/index', 'App\Http\Controllers\User\Authentication\Authenticati
 
 Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
 Route::post('/recipe', 'App\Http\Controllers\RecipeController@addRecipe')->middleware('auth:sanctum');
-Route::post('/recipe/{recipe}/ingredient', [RecipeController::class, 'addIngredient'])->middleware('auth:sanctum');
-Route::get('/recipe/{recipe}/ingredient', [RecipeController::class, 'getIngredient'])->middleware('auth:sanctum');
+// Route::post('/recipe/{recipe}/ingredient', [RecipeController::class, 'addIngredient'])->middleware('auth:sanctum');
 
 Route::get('/ingredient', 'App\Http\Controllers\IngredientController@index');
 

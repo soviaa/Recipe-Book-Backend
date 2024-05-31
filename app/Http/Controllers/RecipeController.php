@@ -95,9 +95,9 @@ class RecipeController extends Controller
                'recipe_type' => 'nullable',
                'image' => 'nullable',
                'category_id' => 'nullable',
-               'ingredients' => 'required|array',
-               'ingredients.*.id' => 'required|exists:ingredients,id',
-               'ingredients.*.quantity' => 'required|numeric',
+               'ingredients' => 'nullable|array',
+               'ingredients.*.id' => 'nullable|exists:ingredients,id',
+               'ingredients.*.quantity' => 'nullable|numeric',
 
             ]);
 
@@ -112,8 +112,10 @@ class RecipeController extends Controller
                 $recipe->save();
             }
             $ingredients = [];
-            foreach ($validatedData['ingredients'] as $ingredientData) {
-                $ingredients[$ingredientData['id']] = $ingredientData['quantity'];
+            if (isset($validatedData['ingredients'])) {
+                foreach ($validatedData['ingredients'] as $ingredientData) {
+                    $ingredients[$ingredientData['id']] = $ingredientData['quantity'];
+                }
             }
 
             $recipe->ingredients = json_encode($ingredients);
