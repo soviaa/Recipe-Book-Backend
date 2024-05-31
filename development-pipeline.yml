@@ -40,6 +40,6 @@ jobs:
                   php artisan migrate:fresh 
                   php artisan db:seed
                   php artisan storage:link
-                  php artisan serve --port=80 &
+                  nohup php artisan serve --port=80 &
                 '
               displayName: "Continuous Integration and Deployment"
