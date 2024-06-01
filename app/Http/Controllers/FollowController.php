@@ -19,15 +19,17 @@ class FollowController extends Controller
             if ($user->id == $userId) {
                 return response()->json(['message' => 'You cannot follow yourself.']);
             }
-            $userToFollow = User::findOrFail($userId);
+//            $userToFollow = User::findOrFail($userId);
 
             if (!$user->followees()->where('followee_id', $userId)->exists()) {
                 $user->followees()->attach($userId);
                 // Create a notification for the followed user (optional)
                 // $userToFollow->notify(new \App\Notifications\FollowNotification($user));
             }
-            $message = $user->firstName . ' has followed You! Click here to view profile.';
-            event(new UserFollowed($message, $userId));
+            $message = 'has followed your profile!';
+
+            $fullname = $user->firstName . " " . $user->lastName;
+            event(new UserFollowed($message, $userId, $user->image, $fullname));
 
             return response()->json([
                 'status' => 'success',
