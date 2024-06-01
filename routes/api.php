@@ -25,8 +25,7 @@ Route::get('/user/index', 'App\Http\Controllers\User\Authentication\Authenticati
 
 Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
 Route::post('/recipe', 'App\Http\Controllers\RecipeController@addRecipe')->middleware('auth:sanctum');
-Route::post('/recipe/{recipe}/ingredient', [RecipeController::class, 'addIngredient'])->middleware('auth:sanctum');
-Route::get('/recipe/{recipe}/ingredient', [RecipeController::class, 'getIngredient'])->middleware('auth:sanctum');
+// Route::post('/recipe/{recipe}/ingredient', [RecipeController::class, 'addIngredient'])->middleware('auth:sanctum');
 
 Route::get('/ingredient', 'App\Http\Controllers\IngredientController@index');
 
@@ -36,8 +35,7 @@ Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle')
 
 Route::get('/comment', 'App\Http\Controllers\User\CommentsController@index');
 Route::get('/comment/{id}', 'App\Http\Controllers\User\CommentsController@commentSingle');
-Route::post('/comment/{id}/reply', 'App\Http\Controllers\User\CommentsController@replyStore');
-Route::post('/comment', 'App\Http\Controllers\User\CommentsController@store');
+
 
 Route::post('/user/tfa/generate', 'App\Http\Controllers\Auth\TfaController@twoFactorGenerate')->middleware('auth:sanctum');
 Route::post('/user/tfa/verify', 'App\Http\Controllers\Auth\TfaController@twoFactorVerify')->middleware('auth:sanctum');
@@ -52,6 +50,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/followers/{userId}', [FollowController::class, 'followers'])->name('followers');
     Route::get('/followees/{userId}', [FollowController::class, 'followees'])->name('followees');
     Route::get('/follow/{userId}/status', [FollowController::class, 'checkFollowStatus'])->name('follows');
+
+
+    Route::post('/comment/{id}/reply', 'App\Http\Controllers\User\CommentsController@replyStore');
+    Route::post('/comment', 'App\Http\Controllers\User\CommentsController@store');
+
 });
 
 

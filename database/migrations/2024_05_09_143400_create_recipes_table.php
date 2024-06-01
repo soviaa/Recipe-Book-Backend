@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->integer('prep_time');
-            $table->integer('cook_time');
+            $table->json('prep_time');
+            $table->json('cook_time');
             $table->integer('servings');
             $table->json('ingredients')->nullable();
             $table->string('difficulty')->nullable();

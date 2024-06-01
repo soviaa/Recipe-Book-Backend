@@ -54,20 +54,57 @@ class RecipeController extends Controller
            $validatedData = $request->validate([
                'name' => 'required',
                'description' => 'required',
-               'prep_time' => 'required',
-               'cook_time' => 'required',
+               'prep_time' => 'required|array',
+               'prep_time.hours' => 'required|numeric',
+               'prep_time.minutes' => [
+                'required',
+                'numeric',
+                function ($attribute, $value, $fail) use (&$request) {
+                    if ($value >= 60) {
+                        $hours = intdiv($value, 60);
+                        $minutes = $value % 60;
+                        $request->merge([
+                            'prep_time' => [
+                                'hours' => $request->input('prep_time.hours') + $hours,
+                                'minutes' => $minutes,
+                            ],
+                        ]);
+                    }
+                },
+            ],
+               'cook_time' => 'required|array',
+               'cook_time.hours' => 'required|numeric',
+                'cook_time.minutes' => [
+                 'required',
+                 'numeric',
+                 function ($attribute, $value, $fail) use (&$request) {
+                      if ($value >= 60) {
+                            $hours = intdiv($value, 60);
+                            $minutes = $value % 60;
+                            $request->merge([
+                             'cook_time' => [
+                                  'hours' => $request->input('cook_time.hours') + $hours,
+                                  'minutes' => $minutes,
+                             ],
+                            ]);
+                      }
+                 },
+                ],
                'servings' => 'required',
                'difficulty' => 'nullable',
                'recipe_type' => 'nullable',
                'image' => 'nullable',
                'category_id' => 'nullable',
-               'ingredients' => 'required|array',
-               'ingredients.*.id' => 'required|exists:ingredients,id',
-               'ingredients.*.quantity' => 'required|numeric',
+               'ingredients' => 'nullable|array',
+               'ingredients.*.id' => 'nullable|exists:ingredients,id',
+               'ingredients.*.quantity' => 'nullable|numeric',
 
             ]);
 
             $validatedData['user_id'] = auth()->user()->id;
+            $validatedData['prep_time'] = json_encode($validatedData['prep_time']);
+            $validatedData['cook_time'] = json_encode($validatedData['cook_time']);
+
 
             $recipe = Recipe::create($validatedData);
             if($request->hasFile('image')) {
@@ -75,8 +112,10 @@ class RecipeController extends Controller
                 $recipe->save();
             }
             $ingredients = [];
-            foreach ($validatedData['ingredients'] as $ingredientData) {
-                $ingredients[$ingredientData['id']] = $ingredientData['quantity'];
+            if (isset($validatedData['ingredients'])) {
+                foreach ($validatedData['ingredients'] as $ingredientData) {
+                    $ingredients[$ingredientData['id']] = $ingredientData['quantity'];
+                }
             }
 
             $recipe->ingredients = json_encode($ingredients);

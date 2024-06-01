@@ -19,8 +19,8 @@ class RecipeSeeder extends Seeder
         DB::table('recipes')->insert([
             'name' => 'Chicken Momo',
             'description' => 'Flour dumplings filled with yummy minced chicken.',
-            'prep_time' => 30,
-            'cook_time' => 45,
+            'prep_time' => json_encode(['hours' => 1, 'minutes' => 30]),
+            'cook_time' => json_encode(['hours' => 4, 'minutes' => 10]),
             'servings' => 4,
             'difficulty' => 'Medium',
             'recipe_type' => 'Dinner',
@@ -33,8 +33,8 @@ class RecipeSeeder extends Seeder
         DB::table('recipes')->insert([
             'name' => 'Pork Momo',
             'description' => 'Flour dumplings filled with yummy minced pork.',
-            'prep_time' => 30,
-            'cook_time' => 45,
+            'prep_time' => json_encode(['hours' => 2, 'minutes' => 50]),
+            'cook_time' => json_encode(['hours' => 1, 'minutes' => 30]),
             'servings' => 4,
             'difficulty' => 'Medium',
             'recipe_type' => 'Dinner',
