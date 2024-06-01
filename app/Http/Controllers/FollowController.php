@@ -132,16 +132,16 @@ class FollowController extends Controller
 
 
 
-    public function SendNotification($user)
-    {
-
-        $message = 'You have a new follower';
-        event(new UserFollowed($message));
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Notification sent successfully',
-            'data' => null
-        ]);
-    }
+//    public function SendNotification($user)
+//    {
+//
+//        $message = 'You have a new follower';
+//        event(new UserFollowed($message));
+//
+//        return response()->json([
+//            'status' => 'success',
+//            'message' => 'Notification sent successfully',
+//            'data' => null
+//        ]);
+//    }
 }
