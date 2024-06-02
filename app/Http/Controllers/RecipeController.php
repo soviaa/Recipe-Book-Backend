@@ -54,10 +54,9 @@ class RecipeController extends Controller
            $validatedData = $request->validate([
                'name' => 'required',
                'description' => 'required',
-               'prep_time' => 'required|array',
-               'prep_time.hours' => 'required|numeric',
-               'prep_time.minutes' => [
-                'required',
+               'prep_time' => 'nullable|array',
+               'prep_time.hours' => 'nullable|numeric',
+               'prep_time.minutes' => ['nullable',
                 'numeric',
                 function ($attribute, $value, $fail) use (&$request) {
                     if ($value >= 60) {
@@ -72,10 +71,9 @@ class RecipeController extends Controller
                     }
                 },
             ],
-               'cook_time' => 'required|array',
-               'cook_time.hours' => 'required|numeric',
-                'cook_time.minutes' => [
-                 'required',
+               'cook_time' => 'nullable|array',
+               'cook_time.hours' => 'nullable|numeric',
+                'cook_time.minutes' => ['nullable',
                  'numeric',
                  function ($attribute, $value, $fail) use (&$request) {
                       if ($value >= 60) {
@@ -100,6 +98,19 @@ class RecipeController extends Controller
                'ingredients.*.quantity' => 'nullable|numeric',
 
             ]);
+            if ($validatedData['cook_time']['minutes'] >= 60) {
+                $hours = intdiv($validatedData['cook_time']['minutes'], 60);
+                $minutes = $validatedData['cook_time']['minutes'] % 60;
+                $validatedData['cook_time']['hours'] += $hours;
+                $validatedData['cook_time']['minutes'] = $minutes;
+            }
+            if ($validatedData['prep_time']['minutes'] >= 60) {
+                $hours = intdiv($validatedData['prep_time']['minutes'], 60);
+                $minutes = $validatedData['prep_time']['minutes'] % 60;
+                $validatedData['prep_time']['hours'] += $hours;
+                $validatedData['prep_time']['minutes'] = $minutes;
+            }
+
 
             $validatedData['user_id'] = auth()->user()->id;
             $validatedData['prep_time'] = json_encode($validatedData['prep_time']);
