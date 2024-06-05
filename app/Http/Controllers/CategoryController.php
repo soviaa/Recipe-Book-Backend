@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Category;
 
 class CategoryController extends Controller
@@ -10,10 +9,11 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Categories retrieved successfully',
-            'data' => $categories
-            ],200);
+            'data' => $categories,
+        ], 200);
     }
 }
