@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function getUser($username){
+    public function getUser($username)
+    {
         $user = User::where('username', $username)->first();
         if ($user->image) {
             // Generate the image URL
@@ -17,10 +17,10 @@ class UserController extends Controller
             $user->image = asset($imageUrl);
         }
 
-         return response()->json([
+        return response()->json([
             'status' => 'success',
             'message' => 'User retrieved successfully',
-            'data' => $user
+            'data' => $user,
         ], 200);
     }
 }

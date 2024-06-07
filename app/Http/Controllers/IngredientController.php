@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Ingredient;
 
 class IngredientController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $ingredients = Ingredient::get();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Ingredients retrieved successfully',
-            'data' => $ingredients
+            'data' => $ingredients,
         ], 200);
     }
 }

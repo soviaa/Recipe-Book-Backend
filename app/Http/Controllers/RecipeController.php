@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\User;
-use Illuminate\Support\Str;
 
 class RecipeController extends Controller
 {
@@ -17,7 +16,7 @@ class RecipeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Recipes retrieved successfully',
-            'data' => $recipes
+            'data' => $recipes,
         ], 200);
     }
 
@@ -31,71 +30,70 @@ class RecipeController extends Controller
             $imageUrl = Storage::url($recipe->user->image);
             $recipe->user->image = asset($imageUrl);
         }
-        if($recipe){
+        if ($recipe) {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Recipe retrieved successfully',
-                'data' => $recipe
+                'data' => $recipe,
             ], 200);
-        }
-        else{
+        } else {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'Recipe not found',
-                'data' => null
+                'data' => null,
             ], 404);
         }
     }
 
     public function addRecipe(Request $request)
     {
-       try{
+        try {
 
-           $validatedData = $request->validate([
-               'name' => 'required',
-               'description' => 'required',
-               'prep_time' => 'nullable|array',
-               'prep_time.hours' => 'nullable|numeric',
-               'prep_time.minutes' => ['nullable',
-                'numeric',
-                function ($attribute, $value, $fail) use (&$request) {
-                    if ($value >= 60) {
-                        $hours = intdiv($value, 60);
-                        $minutes = $value % 60;
-                        $request->merge([
-                            'prep_time' => [
-                                'hours' => $request->input('prep_time.hours') + $hours,
-                                'minutes' => $minutes,
-                            ],
-                        ]);
-                    }
-                },
-            ],
-               'cook_time' => 'nullable|array',
-               'cook_time.hours' => 'nullable|numeric',
-                'cook_time.minutes' => ['nullable',
-                 'numeric',
-                 function ($attribute, $value, $fail) use (&$request) {
-                      if ($value >= 60) {
+            $validatedData = $request->validate([
+                'name' => 'required',
+                'description' => 'required',
+                'prep_time' => 'nullable|array',
+                'prep_time.hours' => 'nullable|numeric',
+                'prep_time.minutes' => ['nullable',
+                    'numeric',
+                    function ($attribute, $value, $fail) use (&$request) {
+                        if ($value >= 60) {
                             $hours = intdiv($value, 60);
                             $minutes = $value % 60;
                             $request->merge([
-                             'cook_time' => [
-                                  'hours' => $request->input('cook_time.hours') + $hours,
-                                  'minutes' => $minutes,
-                             ],
+                                'prep_time' => [
+                                    'hours' => $request->input('prep_time.hours') + $hours,
+                                    'minutes' => $minutes,
+                                ],
                             ]);
-                      }
-                 },
+                        }
+                    },
                 ],
-               'servings' => 'required',
-               'difficulty' => 'nullable',
-               'recipe_type' => 'nullable',
-               'image' => 'nullable',
-               'category_id' => 'nullable',
-               'ingredients' => 'nullable|array',
-               'ingredients.*.id' => 'nullable|exists:ingredients,id',
-               'ingredients.*.quantity' => 'nullable|numeric',
+                'cook_time' => 'nullable|array',
+                'cook_time.hours' => 'nullable|numeric',
+                'cook_time.minutes' => ['nullable',
+                    'numeric',
+                    function ($attribute, $value, $fail) use (&$request) {
+                        if ($value >= 60) {
+                            $hours = intdiv($value, 60);
+                            $minutes = $value % 60;
+                            $request->merge([
+                                'cook_time' => [
+                                    'hours' => $request->input('cook_time.hours') + $hours,
+                                    'minutes' => $minutes,
+                                ],
+                            ]);
+                        }
+                    },
+               ],
+                'servings' => 'required',
+                'difficulty' => 'nullable',
+                'recipe_type' => 'nullable',
+                'image' => 'nullable',
+                'category_id' => 'nullable',
+                'ingredients' => 'nullable|array',
+                'ingredients.*.id' => 'nullable|exists:ingredients,id',
+                'ingredients.*.quantity' => 'nullable|numeric',
 
             ]);
             if ($validatedData['cook_time']['minutes'] >= 60) {
@@ -111,14 +109,12 @@ class RecipeController extends Controller
                 $validatedData['prep_time']['minutes'] = $minutes;
             }
 
-
             $validatedData['user_id'] = auth()->user()->id;
             $validatedData['prep_time'] = json_encode($validatedData['prep_time']);
             $validatedData['cook_time'] = json_encode($validatedData['cook_time']);
 
-
             $recipe = Recipe::create($validatedData);
-            if($request->hasFile('image')) {
+            if ($request->hasFile('image')) {
                 $recipe->image = $this->storeImage($recipe, $request);
                 $recipe->save();
             }
@@ -132,30 +128,29 @@ class RecipeController extends Controller
             $recipe->ingredients = json_encode($ingredients);
             $recipe->save();
 
-
             return response()->json([
                 'status' => 'success',
                 'message' => 'Recipe added successfully',
-                'data' => $recipe
+                'data' => $recipe,
             ], 200);
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Recipe not added . ' . $e->getMessage(),
-                'data' => null
+                'message' => 'Recipe not added . '.$e->getMessage(),
+                'data' => null,
             ], 400);
         }
     }
 
     private function storeImage(Recipe $recipe, Request $request)
     {
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $file = $request->file('image');
             $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $timestamp = time();
             $fileExtension = $file->getClientOriginalExtension();
-            $newFileName = $filename . '_' . $timestamp . '.' . $fileExtension;
+            $newFileName = $filename.'_'.$timestamp.'.'.$fileExtension;
             $path = $file->storeAs('public/recipes', $newFileName);
 
             // Return the path of the stored image
@@ -195,14 +190,14 @@ class RecipeController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Ingredients updated successfully',
-                'data' => $recipe
+                'data' => $recipe,
             ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'Ingredients not updated: ' . $e->getMessage(),
-                'data' => null
+                'message' => 'Ingredients not updated: '.$e->getMessage(),
+                'data' => null,
             ], 400);
         }
     }
@@ -214,8 +209,7 @@ class RecipeController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Ingredients retrieved successfully',
-            'data' => $ingredients
+            'data' => $ingredients,
         ], 200);
     }
-
 }
