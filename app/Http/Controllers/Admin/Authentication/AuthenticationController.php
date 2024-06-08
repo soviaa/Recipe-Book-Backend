@@ -31,7 +31,7 @@ class AuthenticationController extends Controller
 
     public function index()
     {
-        //will be updated
+        //will be
         return response()->json([
             'message' => 'Welcome to the admin panel'], 200);
     }
