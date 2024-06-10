@@ -28,6 +28,7 @@ Route::post('/recipe', 'App\Http\Controllers\RecipeController@addRecipe')->middl
 // Route::post('/recipe/{recipe}/ingredient', [RecipeController::class, 'addIngredient'])->middleware('auth:sanctum');
 
 Route::get('/ingredient', 'App\Http\Controllers\IngredientController@index');
+Route::get('/unit', 'App\Http\Controllers\UnitController@index');
 
 
 Route::get('/category', 'App\Http\Controllers\CategoryController@index');
