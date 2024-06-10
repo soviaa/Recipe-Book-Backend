@@ -94,6 +94,7 @@ class RecipeController extends Controller
                 'ingredients' => 'nullable|array',
                 'ingredients.*.id' => 'nullable|exists:ingredients,id',
                 'ingredients.*.quantity' => 'nullable|numeric',
+                'ingredients.*.unit' => 'nullable|exists:units,id',
 
             ]);
             if ($validatedData['cook_time']['minutes'] >= 60) {
@@ -121,7 +122,10 @@ class RecipeController extends Controller
             $ingredients = [];
             if (isset($validatedData['ingredients'])) {
                 foreach ($validatedData['ingredients'] as $ingredientData) {
-                    $ingredients[$ingredientData['id']] = $ingredientData['quantity'];
+                    $ingredients[$ingredientData['id']] = [
+                        'quantity' => $ingredientData['quantity'],
+                        'unit' => $ingredientData['unit'],
+                    ];
                 }
             }
 
