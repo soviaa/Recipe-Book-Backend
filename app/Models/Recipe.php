@@ -22,7 +22,9 @@ class Recipe extends Model
         'user_id',
         'category_id',
         'is_private',
-        'is_approved'
+        'is_approved',
+        'ingredients',
+        'instructions',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo

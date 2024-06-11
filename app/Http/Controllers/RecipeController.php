@@ -95,6 +95,7 @@ class RecipeController extends Controller
                 'ingredients.*.id' => 'nullable|exists:ingredients,id',
                 'ingredients.*.quantity' => 'nullable|numeric',
                 'ingredients.*.unit' => 'nullable|exists:units,id',
+                'instructions' => 'nullable|array',
 
             ]);
             if ($validatedData['cook_time']['minutes'] >= 60) {
@@ -111,6 +112,7 @@ class RecipeController extends Controller
             }
 
             $validatedData['user_id'] = auth()->user()->id;
+            $validatedData['instructions'] = json_encode($validatedData['instructions']);
             $validatedData['prep_time'] = json_encode($validatedData['prep_time']);
             $validatedData['cook_time'] = json_encode($validatedData['cook_time']);
 

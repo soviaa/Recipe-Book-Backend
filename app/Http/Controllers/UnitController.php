@@ -7,8 +7,10 @@ use App\Models\Unit;
 
 class UnitController extends Controller
 {
-    public function index(){
-        $units = Unit::all();
+    public function index()
+    {
+        $units = Unit::get();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Units retrieved successfully',
