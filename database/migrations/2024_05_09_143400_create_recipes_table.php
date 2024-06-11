@@ -19,6 +19,7 @@ return new class extends Migration
             $table->json('cook_time')->nullable();
             $table->integer('servings');
             $table->json('ingredients')->nullable();
+            $table->json('instructions')->nullable();
             $table->string('difficulty')->nullable();
             $table->string('recipe_type')->nullable();
             $table->string('image')->nullable();
