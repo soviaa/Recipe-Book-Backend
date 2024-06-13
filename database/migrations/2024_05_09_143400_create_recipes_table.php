@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('recipe_type')->nullable();
             $table->string('image')->nullable();
             $table->foreignId('user_id')->constrained();
+            $table->string('meal_type')->nullable();
+            $table->string('dietary_information')->nullable();
             $table->foreignId('category_id')->nullable()->constrained();
             $table->boolean('is_private')->default(false);
             $table->boolean('is_approved')->default(true);

@@ -14,10 +14,16 @@ class UnitSeeder extends Seeder
     public function run(): void
     {
         DB::table('units')->insert([
+            ['name' => 'tbsp'],
+            ['name' => 'tsp'],
             ['name' => 'g'],
             ['name' => 'kg'],
             ['name' => 'ml'],
             ['name' => 'l'],
+            ['name' => 'pcs'],
+            ['name' => 'cup'],
+            ['name' => 'oz'],
+            ['name' => 'lb'],
         ]);
     }
 }
