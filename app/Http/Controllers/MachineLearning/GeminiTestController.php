@@ -31,7 +31,7 @@ class GeminiTestController extends Controller
 
         $result = Gemini::geminiProVision()
             ->generateContent([
-                'Please provide the detailed recipe of given image.',
+                'Please provide the detailed recipe of given image (Ingredients, Instruction and Tips). If the given image is not of food or eatable item then respond with the given image is not of food or eatable item.',
                 new Blob(
                     mimeType: MimeType::IMAGE_JPEG,
                     data: base64_encode(
