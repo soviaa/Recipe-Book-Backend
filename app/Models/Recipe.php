@@ -23,7 +23,6 @@ class Recipe extends Model
         'category_id',
         'is_private',
         'is_approved',
-        'ingredients',
         'instructions',
     ];
 
