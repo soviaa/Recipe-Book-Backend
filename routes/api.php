@@ -53,4 +53,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/ml', 'App\Http\Controllers\MachineLearning\GeminiTestController@index');
-Route::get('/ml/image', 'App\Http\Controllers\MachineLearning\GeminiTestController@imageIdentifier');
+Route::post('/ml/image', 'App\Http\Controllers\MachineLearning\GeminiTestController@imageIdentifier');

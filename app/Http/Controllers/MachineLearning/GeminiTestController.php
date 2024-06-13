@@ -21,15 +21,21 @@ class GeminiTestController extends Controller
         ], 200);
     }
 
-    public function imageIdentifier()
+    public function imageIdentifier(Request $request)
     {
+        $request->validate([
+            'image' => 'required|image',
+        ]);
+
+        $image = $request->file('image');
+
         $result = Gemini::geminiProVision()
             ->generateContent([
                 'Please provide the detailed recipe of given image.',
                 new Blob(
                     mimeType: MimeType::IMAGE_JPEG,
                     data: base64_encode(
-                        file_get_contents('https://upload.wikimedia.org/wikipedia/commons/9/91/Pizza-3007395.jpg')
+                        file_get_contents($image->getRealPath())
                     )
                 ),
             ]);
