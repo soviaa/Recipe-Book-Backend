@@ -98,6 +98,7 @@ class RecipeController extends Controller
                 'instructions' => 'nullable|array',
                 'meal_type' => 'nullable',
                 'dietary_information' => 'nullable',
+                'additional_notes' => 'nullable',
 
             ]);
             if ($validatedData['cook_time']['minutes'] >= 60) {
@@ -119,6 +120,7 @@ class RecipeController extends Controller
             $validatedData['cook_time'] = json_encode($validatedData['cook_time']);
             $validatedData['meal_type'] = $request->input('meal_type');
             $validatedData['dietary_information'] = $request->input('dietary_information');
+            $validatedData['additional_notes'] = $request->input('additional_notes');
 
             $recipe = Recipe::create($validatedData);
             if ($request->hasFile('image')) {

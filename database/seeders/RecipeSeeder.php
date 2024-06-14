@@ -23,7 +23,7 @@ class RecipeSeeder extends Seeder
             'cook_time' => json_encode(['hours' => 4, 'minutes' => 10]),
             'servings' => 4,
             'difficulty' => 'Medium',
-            'recipe_type' => 'Dinner',
+            'meal_type' => 'Dinner',
             'image' => '/sample.jpg',
             'user_id' => 1, // assuming a user with id 1 exists
             'category_id' => 1, // assuming a category with id 1 exists
@@ -37,7 +37,7 @@ class RecipeSeeder extends Seeder
             'cook_time' => json_encode(['hours' => 1, 'minutes' => 30]),
             'servings' => 4,
             'difficulty' => 'Medium',
-            'recipe_type' => 'Dinner',
+            'meal_type' => 'Dinner',
             'image' => '/sample.jpg',
             'user_id' => 2, // assuming a user with id 1 exists
             'category_id' => 2, // assuming a category with id 1 exists
