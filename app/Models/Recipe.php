@@ -24,6 +24,9 @@ class Recipe extends Model
         'is_private',
         'is_approved',
         'instructions',
+        'meal_type',
+        'dietary_information',
+        'additional_notes',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
