@@ -33,6 +33,6 @@ class AuthenticationController extends Controller
     {
         //will be
         return response()->json([
-            'message' => 'Welcome to the admin panel'], 200);
+            'message' => 'Welcome to the admin panel!'], 200);
     }
 }
