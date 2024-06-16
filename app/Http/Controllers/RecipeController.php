@@ -25,6 +25,11 @@ class RecipeController extends Controller
         $recipe = Recipe::with('user')->where('id', $id)->first();
 
         // Check if the user has an image
+        if ($recipe->image) {
+            // Generate the image URL
+            $imageUrl = Storage::url($recipe->image);
+            $recipe->image = asset($imageUrl);
+        }
         if ($recipe->user->image) {
             // Generate the image URL
             $imageUrl = Storage::url($recipe->user->image);
