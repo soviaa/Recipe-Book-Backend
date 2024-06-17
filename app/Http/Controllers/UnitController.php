@@ -17,4 +17,23 @@ class UnitController extends Controller
             'data' => $units,
         ], 200);
     }
+
+    public function getSingle($id)
+    {
+        $unit = Unit::where('id', $id)->first();
+
+        if ($unit) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Unit retrieved successfully',
+                'data' => $unit,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Unit not found',
+                'data' => null,
+            ], 404);
+        }
+    }
 }
