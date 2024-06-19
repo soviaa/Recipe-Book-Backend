@@ -236,4 +236,29 @@ class RecipeController extends Controller
             'data' => $ingredients,
         ], 200);
     }
+
+    public function userRecipes($userId)
+    {
+    $user = User::with('recipes')->find($userId);
+
+    foreach($user->recipes as &$recipe) {
+        if ($recipe->image) {
+            $imageUrl = Storage::url($recipe->image);
+            $recipe->image = asset($imageUrl);
+        }
+    }
+
+    if (!$user) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'User not found',
+        ], 404);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Recipes retrieved successfully',
+        'data' => $user->recipes,
+    ], 200);
+}
 }
