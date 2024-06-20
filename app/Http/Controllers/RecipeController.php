@@ -12,6 +12,8 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::get()->toArray();
+        // $recipes = Recipe::with('category')->get()->toArray();
+
         foreach ($recipes as &$recipe) {
             if (isset($recipe['image'])) {
                 $imageUrl = Storage::url($recipe['image']);
