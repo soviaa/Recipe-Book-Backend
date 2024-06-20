@@ -25,6 +25,7 @@ Route::get('/user/index', 'App\Http\Controllers\User\Authentication\Authenticati
 Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
 Route::post('/recipe', 'App\Http\Controllers\RecipeController@addRecipe')->middleware('auth:sanctum');
 Route::get('/recipe/user/{userId}', 'App\Http\Controllers\RecipeController@userRecipes');
+Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle');
 // Route::post('/recipe/{recipe}/ingredient', [RecipeController::class, 'addIngredient'])->middleware('auth:sanctum');
 
 Route::get('/ingredient', 'App\Http\Controllers\IngredientController@index');
@@ -33,7 +34,8 @@ Route::get('/unit', 'App\Http\Controllers\UnitController@index');
 Route::get('/unit/{id}', 'App\Http\Controllers\UnitController@getSingle');
 
 Route::get('/category', 'App\Http\Controllers\CategoryController@index');
-Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle');
+Route::post('/category', 'App\Http\Controllers\CategoryController@category')->middleware('auth:sanctum');
+Route::get('/category/{id}', 'App\Http\Controllers\CategoryController@getSingle');
 
 Route::get('/comment', 'App\Http\Controllers\User\CommentsController@index');
 Route::get('/comment/{id}', 'App\Http\Controllers\User\CommentsController@commentSingle');
