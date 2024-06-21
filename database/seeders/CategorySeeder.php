@@ -25,19 +25,19 @@ class CategorySeeder extends Seeder
             'name' => 'Korean',
             'slug' => '/korean',
             'description' => 'This is korean.',
-            'image' => 'https://images.yummy.ph/yummy/uploads/2022/07/koreanfoodguidemainimage.jpg',
+            'image' => 'https://images.yummy.ph/yummy/uploads/2022/04/koreanfoodramyunwithtteokbokki.jpg',
         ],
         [
             'name' => 'Chinese',
             'slug' => '/chinese',
             'description' => 'This is chinese.',
-            'image' => 'https://i.pinimg.com/236x/a0/32/da/a032daf3c4b9950b96ae99ee65812c3e.jpg',
+            'image' => 'https://media.timeout.com/images/105441129/image.jpg',
         ],
         [
             'name' => 'Italian',
             'slug' => '/italian',
             'description' => 'This is italian.',
-            'image' => 'https://www.foodies.pk/wp-content/uploads/2020/04/italian-cuisine-italian-food-scaled.jpeg',
+            'image' => 'https://theplanetd.com/images/Traditional-Italian-Food.jpg',
         ],
         [
             'name' => 'Mexican',
@@ -50,13 +50,13 @@ class CategorySeeder extends Seeder
             'name' => 'Thai',
             'slug' => '/thai',
             'description' => 'This is thai.',
-            'image' => 'https://www.savoredjourneys.com/wp-content/uploads/2021/11/thai-food.jpg',
+            'image' => 'https://www.eatthis.com/wp-content/uploads/sites/4//media/images/ext/891825630/pad-thai.jpg?quality=82&strip=1',
         ],
         [
             'name' => 'American',
             'slug' => '/american',
             'description' => 'This is american.',
-            'image' => 'https://d2lswn7b0fl4u2.cloudfront.net/photos/pg-american-dishes-1652886459.jpg',
+            'image' => 'https://cdn.tasteatlas.com/images/toplistarticles/08c818739e4b48ce96d319c16f4cc0ca.jpg',
         ],
         [
             'name' => 'Japanese',
