@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\Recipe\UserRecipeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -60,3 +62,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/ml', 'App\Http\Controllers\MachineLearning\GeminiTestController@index');
 Route::post('/ml/image', 'App\Http\Controllers\MachineLearning\GeminiTestController@imageIdentifier');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/save-recipe', [UserRecipeController::class, 'saveRecipe']);
+    Route::post('/unsave-recipe', [UserRecipeController::class, 'unsaveRecipe']);
+    Route::post('/share-recipe', [UserRecipeController::class, 'shareRecipe']);
+    Route::get('/saved-recipes', [UserRecipeController::class, 'getSavedRecipes']);
+    Route::get('/shared-recipes', [UserRecipeController::class, 'getSharedRecipes']);
+    Route::get('/is-recipe-saved/{recipeId}', [UserRecipeController::class, 'isRecipeSaved']);
+});
