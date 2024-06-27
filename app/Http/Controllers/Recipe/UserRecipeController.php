@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UserRecipe;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Recipe;
+use Illuminate\Support\Facades\Storage;
 
 class UserRecipeController extends Controller
 {
@@ -30,7 +32,7 @@ class UserRecipeController extends Controller
     // Return the userRecipe
     return response()->json([
         'status' => 'success',
-        'userRecipe' => $userRecipe
+        'userRecipe' => $userRecipe,
     ]);
 }
 public function unsaveRecipe(Request $request)
@@ -78,12 +80,36 @@ public function unsaveRecipe(Request $request)
         return response()->json($userRecipe);
     }
 
-    public function getSavedRecipes()
-    {
-        $user = Auth::user();
-        $userRecipe = UserRecipe::where('user_id', $user->id)->first();
-        return response()->json($userRecipe ? $userRecipe->savedRecipe : []);
+
+public function getSavedRecipes()
+{
+    $user = Auth::user();
+    $userRecipe = UserRecipe::where('user_id', $user->id)->first();
+
+    if ($userRecipe) {
+        // Decode the JSON savedRecipe to an array of IDs
+        $savedRecipeIds = json_decode($userRecipe->savedRecipe, true) ?? [];
+
+        // Fetch the recipes data for the saved recipe IDs
+        $recipes = Recipe::whereIn('id', $savedRecipeIds)->get();
+
+        // Iterate over each recipe to modify the image URL
+        foreach ($recipes as &$recipe) {
+            if (isset($recipe->image)) { // Assuming 'image' is the attribute name in your Recipe model
+                $imageUrl = Storage::url($recipe->image);
+                $recipe->image = asset($imageUrl); // Update the image attribute to the full URL
+            }
+        }
+
+        // Return the modified recipes data
+        return response()->json($recipes);
+    } else {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'User has not saved any recipes'
+        ]);
     }
+}
 
     public function getSharedRecipes()
     {
