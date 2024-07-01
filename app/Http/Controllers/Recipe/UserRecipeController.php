@@ -65,21 +65,6 @@ public function unsaveRecipe(Request $request)
     }
 }
 
-    public function shareRecipe(Request $request)
-    {
-        $user = Auth::user();
-        $userRecipe = UserRecipe::firstOrCreate(
-            ['user_id' => $user->id],
-            ['sharedRecipe' => []]
-        );
-        $sharedRecipes = $userRecipe->sharedRecipe ?? [];
-        $sharedRecipes[] = $request->recipe_id;
-        $userRecipe->sharedRecipe = $sharedRecipes;
-        $userRecipe->save();
-
-        return response()->json($userRecipe);
-    }
-
 
 public function getSavedRecipes()
 {
@@ -111,12 +96,6 @@ public function getSavedRecipes()
     }
 }
 
-    public function getSharedRecipes()
-    {
-        $user = Auth::user();
-        $userRecipe = UserRecipe::where('user_id', $user->id)->first();
-        return response()->json($userRecipe ? $userRecipe->sharedRecipe : []);
-    }
     public function isRecipeSaved($recipeId)
 {
     $userId = Auth::id();

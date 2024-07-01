@@ -28,6 +28,8 @@ Route::get('/recipe', 'App\Http\Controllers\RecipeController@index');
 Route::post('/recipe', 'App\Http\Controllers\RecipeController@addRecipe')->middleware('auth:sanctum');
 Route::get('/recipe/user/{userId}', 'App\Http\Controllers\RecipeController@userRecipes');
 Route::get('/recipe/{id}', 'App\Http\Controllers\RecipeController@recipeSingle');
+Route::get('/recipe/user/{userId}', 'App\Http\Controllers\RecipeController@userRecipes');
+
 // Route::post('/recipe/{recipe}/ingredient', [RecipeController::class, 'addIngredient'])->middleware('auth:sanctum');
 
 Route::get('/ingredient', 'App\Http\Controllers\IngredientController@index');
@@ -68,6 +70,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/unsave-recipe', [UserRecipeController::class, 'unsaveRecipe']);
     Route::post('/share-recipe', [UserRecipeController::class, 'shareRecipe']);
     Route::get('/saved-recipes', [UserRecipeController::class, 'getSavedRecipes']);
-    Route::get('/shared-recipes', [UserRecipeController::class, 'getSharedRecipes']);
     Route::get('/is-recipe-saved/{recipeId}', [UserRecipeController::class, 'isRecipeSaved']);
 });
