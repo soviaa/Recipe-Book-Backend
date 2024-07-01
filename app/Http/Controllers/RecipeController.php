@@ -263,5 +263,4 @@ class RecipeController extends Controller
         'data' => $user->recipes,
     ], 200);
 }
-
 }
