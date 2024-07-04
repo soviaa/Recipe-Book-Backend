@@ -15,6 +15,7 @@ Route::post('/login', 'App\Http\Controllers\Admin\Authentication\AuthenticationC
 Route::post('/user/register', 'App\Http\Controllers\User\Authentication\AuthenticationController@register');
 Route::post('/user/reset-password', 'App\Http\Controllers\User\Authentication\AuthenticationController@resetPassword')->middleware('auth:sanctum');
 Route::post('/user/update', 'App\Http\Controllers\User\Authentication\AuthenticationController@update')->middleware('auth:sanctum');
+Route::post('/user/update-image', 'App\Http\Controllers\User\Authentication\AuthenticationController@updateImages')->middleware('auth:sanctum');
 Route::get('/user/profile', 'App\Http\Controllers\User\Authentication\AuthenticationController@index')->middleware('auth:sanctum');
 Route::get('/user/setting', 'App\Http\Controllers\User\Authentication\AuthenticationController@getUserSetting')->middleware('auth:sanctum');
 Route::post('/user/setting', 'App\Http\Controllers\User\Authentication\AuthenticationController@updateSetting')->middleware('auth:sanctum');
