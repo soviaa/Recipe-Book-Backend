@@ -98,74 +98,88 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function login(Request $request)
-    {
-        try {
-            $credentials = $request->only('email', 'password');
-            $user = User::where('email', $credentials['email'])->first();
-            if (! Hash::check($credentials['password'], $user->password)) {
-                return response()->json([
-                    'message' => 'Invalid credentials'], 401);
-            }
-            $token = $user->createToken('token-name')->plainTextToken;
-
-            return response()->json([
-                'access_token' => $token,
-                'message' => 'Login successful',
-                'data' => $user,
-            ], 200);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'An error occurred',
-                'error' => $e->getMessage()], 500);
-        }
-    }
-
     public function update(Request $request)
     {
         try {
             $request->validate([
                 'firstName' => 'sometimes|required',
                 'lastName' => 'sometimes|required',
-                'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg',
+                'username' => 'sometimes|required',
             ]);
 
             $user = $request->user();
             $user->firstName = $request->firstName;
             $user->lastName = $request->lastName;
-
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $timestamp = time();
-                $fileExtension = $file->getClientOriginalExtension();
-                $newFileName = $filename.'_'.$timestamp.'.'.$fileExtension;
-                $path = $file->storeAs('public/profileImages', $newFileName);
-                $user->image = $path;
-            }
+            $user->username = $request->username;
 
             $user->save();
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'User updated successfully',
-                'data' => $request->image,
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'status' => 'failure',
                 'message' => 'User update failed',
                 'errors' => $e->errors(),
-
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'failure',
-                'message' => 'User update failed'.$e,
+                'message' => 'User update failed' . $e,
             ], 400);
         }
     }
+
+    public function updateImages(Request $request)
+    {
+        try {
+            $request->validate([
+                'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg',
+                'cover_image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif,svg',
+            ]);
+
+            $user = $request->user();
+
+            if ($request->hasFile('image')) {
+                $path = $this->storeImage($request->file('image'), 'public/profileImages');
+                $user->image = $path;
+            }
+
+            if ($request->hasFile('cover_image')) {
+                $path = $this->storeImage($request->file('cover_image'), 'public/coverImages');
+                $user->cover_image = $path;
+            }
+
+            $user->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Images updated successfully',
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Image update failed',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failure',
+                'message' => 'Image update failed' . $e,
+            ], 400);
+        }
+    }
+    private function storeImage($file, $directory)
+    {
+        $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $timestamp = time();
+        $fileExtension = $file->getClientOriginalExtension();
+        $newFileName = $filename.'_'.$timestamp.'.'.$fileExtension;
+        return $file->storeAs($directory, $newFileName);
+    }
+
 
     // public function index()
     // {
