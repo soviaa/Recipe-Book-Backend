@@ -22,6 +22,10 @@ class AuthenticationController extends Controller
             $user->image = asset($imageUrl);
         }
 
+        if($user->cover_image) {
+            $coverImageUrl = Storage::url($user->cover_image);
+            $user->cover_image = asset($coverImageUrl);
+        }
         return response()->json([
             'message' => 'Welcome to the user panel',
             'data' => $user,
@@ -54,6 +58,29 @@ class AuthenticationController extends Controller
                 'message' => 'User registration failed'.$e,
                 'data' => null,
             ], 401);
+        }
+    }
+    public function login(Request $request)
+    {
+        try {
+            $credentials = $request->only('email', 'password');
+            $user = User::where('email', $credentials['email'])->first();
+            if (! Hash::check($credentials['password'], $user->password)) {
+                return response()->json([
+                    'message' => 'Invalid credentials'], 401);
+            }
+            $token = $user->createToken('token-name')->plainTextToken;
+
+            return response()->json([
+                'access_token' => $token,
+                'message' => 'Login successful',
+                'data' => $user,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred',
+                'error' => $e->getMessage()], 500);
         }
     }
 
@@ -97,6 +124,7 @@ class AuthenticationController extends Controller
             ], 400);
         }
     }
+
 
     public function update(Request $request)
     {
@@ -179,6 +207,7 @@ class AuthenticationController extends Controller
         $newFileName = $filename.'_'.$timestamp.'.'.$fileExtension;
         return $file->storeAs($directory, $newFileName);
     }
+
 
 
     // public function index()
